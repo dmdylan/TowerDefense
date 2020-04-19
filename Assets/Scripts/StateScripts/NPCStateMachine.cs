@@ -8,12 +8,10 @@ namespace StateStuff
     {
         protected State state;
 
-        public State SetState(State state)
+        public void SetState(State state)
         {
             this.state = state;
             state.EnterState();
-
-            return state;
         }
     }
 }

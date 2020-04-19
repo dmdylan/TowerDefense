@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 public class NPCMovementTest : MonoBehaviour
 {
-    [SerializeField] private Transform objective;
+    [SerializeField] private Transform objective = null;
     [SerializeField] private float minimumPointDistance = .1f;
     [SerializeField] private Transform[] wayPoints = null;
     NavMeshAgent navMeshAgent;
