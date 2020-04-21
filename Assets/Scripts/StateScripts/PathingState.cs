@@ -13,6 +13,14 @@ namespace StateStuff
         {
         }
 
+        public override void EnterState()
+        {
+            if (npcBehavior.navMeshAgent.Equals(null))
+                return;
+            else
+                npcBehavior.navMeshAgent.SetDestination(npcBehavior.objective.position);
+        }
+
         public override void UpdateState()
         {
             Debug.Log("Pathing");
