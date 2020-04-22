@@ -10,6 +10,8 @@ public class NPCBehavior : NPCStateMachine
     public BaseEnemyStats baseEnemyStats;
     public NavMeshAgent navMeshAgent;
     bool switchStates = false; //for debugging
+    bool attackableInRange = false;
+    int layerMask = 1 << 8;
 
     
     //TODO: Setup way in code for object to be auto assigned to enemy through code
@@ -20,7 +22,8 @@ public class NPCBehavior : NPCStateMachine
     {
        navMeshAgent = this.GetComponent<NavMeshAgent>();
        SetState(new PathingState(this));
-        state.EnterState();
+       state.EnterState(); 
+       StartCoroutine(ProximityCheck());
     }
 
     // Update is called once per frame
@@ -43,5 +46,25 @@ public class NPCBehavior : NPCStateMachine
         }
 
         state.UpdateState();
+    }
+
+    IEnumerator ProximityCheck()
+    {
+        while (Physics.CheckSphere(transform.position, 3, layerMask).Equals(false))
+        {
+            yield return new WaitForSeconds(1f);
+            Debug.Log("Checking for enemies");
+            //if (Physics.CheckSphere(transform.position, 3))
+              //  break;
+        }
+
+        Debug.Log("Found enemy");
+        StopCoroutine(ProximityCheck());
+        //yield break;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, 3);
     }
 }
