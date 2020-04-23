@@ -9,9 +9,9 @@ public class NPCBehavior : NPCStateMachine
     public Transform objective = null;
     public BaseEnemyStats baseEnemyStats;
     public NavMeshAgent navMeshAgent;
-    bool switchStates = false; //for debugging
+    //bool switchStates = false; //for debugging
     bool attackableInRange = false;
-    int layerMask = 1 << 8;
+    readonly int layerMask = 1 << 8;
 
     
     //TODO: Setup way in code for object to be auto assigned to enemy through code
@@ -21,15 +21,19 @@ public class NPCBehavior : NPCStateMachine
     {
        navMeshAgent = this.GetComponent<NavMeshAgent>();
        SetState(new PathingState(this));
-       state.EnterState(); 
+       state.EnterState();
        StartCoroutine(ProximityCheck());
+
+       //TODO: Make it so update coroutine is called repeatedly and not just once or just swap back to method
+       StartCoroutine(state.UpdateState());
     }
 
     // Update is called once per frame
     void Update()
     {
         Debug.Log(state);
-        state.UpdateState();
+        //state.UpdateState();
+        
     }
 
     IEnumerator ProximityCheck()

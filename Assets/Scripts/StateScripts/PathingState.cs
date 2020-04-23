@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
 using UnityEngine;
 
 namespace StateStuff
@@ -23,9 +19,13 @@ namespace StateStuff
                 npcBehavior.navMeshAgent.SetDestination(npcBehavior.objective.position);
         }
 
-        public override void UpdateState()
+        public override IEnumerator UpdateState()
         {
-            Debug.Log("Pathing");
+            while (true)
+            {
+                Debug.Log("Pathing");
+                yield return new WaitForSeconds(.5f);
+            }
         }
 
         public override void ExitState()

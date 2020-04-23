@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
 using UnityEngine;
 
 namespace StateStuff
@@ -18,9 +14,13 @@ namespace StateStuff
             base.EnterState();
         }
 
-        public override void UpdateState()
+        public override IEnumerator UpdateState()
         {
-            Debug.Log("Attacking");
+            while (true) 
+            { 
+                Debug.Log("Attacking");
+                yield return new WaitForSeconds(.5f);
+            }
         }
     }
 }

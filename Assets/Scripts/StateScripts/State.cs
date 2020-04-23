@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
 
 namespace StateStuff
 {
@@ -20,7 +16,7 @@ namespace StateStuff
 
         }
 
-        public abstract void UpdateState();
+        public abstract IEnumerator UpdateState();
 
         public virtual void ExitState()
         {
