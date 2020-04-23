@@ -17,6 +17,8 @@ namespace StateStuff
         {
             if (npcBehavior.navMeshAgent.Equals(null))
                 return;
+            else if (npcBehavior.navMeshAgent.isStopped)          
+                npcBehavior.navMeshAgent.isStopped = false;           
             else
                 npcBehavior.navMeshAgent.SetDestination(npcBehavior.objective.position);
         }
@@ -24,6 +26,11 @@ namespace StateStuff
         public override void UpdateState()
         {
             Debug.Log("Pathing");
+        }
+
+        public override void ExitState()
+        {
+            npcBehavior.navMeshAgent.isStopped = true;
         }
     }
 }

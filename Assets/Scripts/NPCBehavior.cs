@@ -15,7 +15,6 @@ public class NPCBehavior : NPCStateMachine
 
     
     //TODO: Setup way in code for object to be auto assigned to enemy through code
-    //TODO: Check for obstacles in range to attack and switch state. Range check? Physics.Overlapsphere/Checksphere?
 
     // Start is called before the first frame update
     void Start()
@@ -30,37 +29,50 @@ public class NPCBehavior : NPCStateMachine
     void Update()
     {
         Debug.Log(state);
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (switchStates.Equals(false))
-            {
-                SetState(new AttackingState(this));
-                switchStates = true;
-            }
-            else
-            {
-                SetState(new PathingState(this));
-                switchStates = false;
-            }
-        }
-
         state.UpdateState();
     }
 
     IEnumerator ProximityCheck()
     {
-        while (Physics.CheckSphere(transform.position, 3, layerMask).Equals(false))
+        //while there are no objects to attack in attack range
+        while (attackableInRange.Equals(false))
         {
             yield return new WaitForSeconds(1f);
-            Debug.Log("Checking for enemies");
-            //if (Physics.CheckSphere(transform.position, 3))
-              //  break;
+            Debug.Log("Checking for structures");
+            //Checks for any structures in attack range, if there are then it 
+            //changes to attack state and sets bool to true
+            if(Physics.CheckSphere(transform.position, 3, layerMask))
+            {
+                state.ExitState();
+                SetState(new AttackingState(this));
+                state.EnterState();
+                attackableInRange = true;
+                Debug.Log("Found structure");
+            }
+            Debug.Log("No structres found");
         }
 
-        Debug.Log("Found enemy");
-        StopCoroutine(ProximityCheck());
-        //yield break;
+        //while there is an object in range to attack
+        while (attackableInRange.Equals(true))
+        {
+            yield return new WaitForSeconds(1f);
+            Debug.Log("Attacking structure");
+
+            //checks if there are no structures in range to attack (the structure was destroyed)
+            //if so it changes back to pathing state and sets bool to false
+            if (Physics.CheckSphere(transform.position, 3, layerMask).Equals(false))
+            {
+                state.ExitState();
+                SetState(new PathingState(this));
+                state.EnterState();
+                attackableInRange = false;
+            }
+        }
+        Debug.Log("Structure dead");
+
+        //Restarts the coroutine upon entering pathing state again
+        StartCoroutine(ProximityCheck());
+        Debug.Log("Started Proximity Check again");
     }
 
     private void OnDrawGizmos()

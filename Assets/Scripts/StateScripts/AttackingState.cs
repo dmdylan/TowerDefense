@@ -13,6 +13,11 @@ namespace StateStuff
         {
         }
 
+        public override void EnterState()
+        {
+            base.EnterState();
+        }
+
         public override void UpdateState()
         {
             Debug.Log("Attacking");
