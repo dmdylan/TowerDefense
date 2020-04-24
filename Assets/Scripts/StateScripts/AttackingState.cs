@@ -7,20 +7,25 @@ namespace StateStuff
     {
         public AttackingState(NPCBehavior npcBehavior) : base(npcBehavior)
         {
+            EnterState();
         }
 
         public override void EnterState()
         {
-            base.EnterState();
         }
 
         public override IEnumerator UpdateState()
         {
-            while (true) 
+            while (npcBehavior.attackableInRange.Equals(true)) 
             { 
-                Debug.Log("Attacking");
                 yield return new WaitForSeconds(.5f);
+                Debug.Log("Attacking");
             }
+        }
+
+        public override void ExitState()
+        {
+
         }
     }
 }

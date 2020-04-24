@@ -1,11 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using UnityEngine;
 
 namespace StateStuff
 {
     public abstract class State
     {
         protected NPCBehavior npcBehavior;
-
+        
         public State(NPCBehavior npcBehavior)
         {
             this.npcBehavior = npcBehavior;
@@ -13,14 +15,11 @@ namespace StateStuff
 
         public virtual void EnterState()
         {
-
+            
         }
 
         public abstract IEnumerator UpdateState();
 
-        public virtual void ExitState()
-        {
-
-        }
+        public abstract void ExitState();
     }
 }

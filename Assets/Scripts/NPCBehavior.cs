@@ -9,22 +9,19 @@ public class NPCBehavior : NPCStateMachine
     public Transform objective = null;
     public BaseEnemyStats baseEnemyStats;
     public NavMeshAgent navMeshAgent;
-    //bool switchStates = false; //for debugging
-    bool attackableInRange = false;
+    public bool attackableInRange = false;
     readonly int layerMask = 1 << 8;
-
+    private State currentState;
     
     //TODO: Setup way in code for object to be auto assigned to enemy through code
 
     // Start is called before the first frame update
     void Start()
     {
-       navMeshAgent = this.GetComponent<NavMeshAgent>();
+       navMeshAgent = GetComponent<NavMeshAgent>();
        SetState(new PathingState(this));
-       state.EnterState();
+       currentState = state;
        StartCoroutine(ProximityCheck());
-
-       //TODO: Make it so update coroutine is called repeatedly and not just once or just swap back to method
        StartCoroutine(state.UpdateState());
     }
 
@@ -32,8 +29,12 @@ public class NPCBehavior : NPCStateMachine
     void Update()
     {
         Debug.Log(state);
-        //state.UpdateState();
-        
+
+        if(currentState != state)
+        {
+            StartCoroutine(state.UpdateState());
+            currentState = state;
+        }
     }
 
     IEnumerator ProximityCheck()
@@ -49,7 +50,6 @@ public class NPCBehavior : NPCStateMachine
             {
                 state.ExitState();
                 SetState(new AttackingState(this));
-                state.EnterState();
                 attackableInRange = true;
                 Debug.Log("Found structure");
             }
@@ -68,7 +68,6 @@ public class NPCBehavior : NPCStateMachine
             {
                 state.ExitState();
                 SetState(new PathingState(this));
-                state.EnterState();
                 attackableInRange = false;
             }
         }

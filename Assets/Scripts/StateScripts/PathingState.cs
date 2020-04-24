@@ -7,6 +7,7 @@ namespace StateStuff
     {
         public PathingState(NPCBehavior npcBehavior) : base(npcBehavior)
         {
+            EnterState();
         }
 
         public override void EnterState()
@@ -21,10 +22,11 @@ namespace StateStuff
 
         public override IEnumerator UpdateState()
         {
-            while (true)
+            while (npcBehavior.attackableInRange.Equals(false))
             {
-                Debug.Log("Pathing");
                 yield return new WaitForSeconds(.5f);
+                Debug.Log("Pathing");
+                
             }
         }
 

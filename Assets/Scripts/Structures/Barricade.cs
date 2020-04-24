@@ -5,18 +5,26 @@ using UnityEngine;
 
 public class Barricade : Structure
 {
+    private float currentHealth = 0;
+
     public override void TakeDamage(float damageAmount)
     {
-        throw new System.NotImplementedException();
+        currentHealth -= damageAmount;
     }
 
     private void Start()
     {
-        Debug.Log(baseHealth);
-        Debug.Log(baseDamage);
-        Debug.Log(baseRange);
-        Debug.Log(baseAttackRate);
-        Debug.Log(resourceBuildCost);
-        Debug.Log(resourceUpgradeCost);
+        currentHealth = baseHealth;
+        //Debug.Log(baseHealth);
+        //Debug.Log(baseDamage);
+        //Debug.Log(baseRange);
+        //Debug.Log(baseAttackRate);
+        //Debug.Log(resourceBuildCost);
+        //Debug.Log(resourceUpgradeCost);
+    }
+
+    private void Update()
+    {
+        Debug.Log(currentHealth);
     }
 }
