@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: BaseEnemy
   m_EditorClassIdentifier: 
   movementSpeed: 1.5
-  health: 10
+  maxHealth: 10
+  damage: 5
   attackType: 0
   attackRange: 1.5
+  attackRate: 1

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
 using StateStuff;
+using System.Linq;
 
 public class NPCBehavior : NPCStateMachine
 {
@@ -10,14 +11,14 @@ public class NPCBehavior : NPCStateMachine
     public BaseEnemyStats baseEnemyStats;
     public NavMeshAgent navMeshAgent;
     public bool attackableInRange = false;
-    readonly int layerMask = 1 << 8;
+    public readonly int layerMask = 1 << 8;
     private State currentState;
     
     //TODO: Setup way in code for object to be auto assigned to enemy through code
 
     // Start is called before the first frame update
     void Start()
-    {
+    { 
        navMeshAgent = GetComponent<NavMeshAgent>();
        SetState(new PathingState(this));
        currentState = state;
@@ -43,43 +44,38 @@ public class NPCBehavior : NPCStateMachine
         while (attackableInRange.Equals(false))
         {
             yield return new WaitForSeconds(1f);
-            Debug.Log("Checking for structures");
             //Checks for any structures in attack range, if there are then it 
             //changes to attack state and sets bool to true
-            if(Physics.CheckSphere(transform.position, 3, layerMask))
+            if(Physics.CheckSphere(transform.position, baseEnemyStats.AttackRange, layerMask))
             {
+
                 state.ExitState();
                 SetState(new AttackingState(this));
                 attackableInRange = true;
-                Debug.Log("Found structure");
             }
-            Debug.Log("No structres found");
         }
 
         //while there is an object in range to attack
         while (attackableInRange.Equals(true))
         {
             yield return new WaitForSeconds(1f);
-            Debug.Log("Attacking structure");
 
             //checks if there are no structures in range to attack (the structure was destroyed)
             //if so it changes back to pathing state and sets bool to false
-            if (Physics.CheckSphere(transform.position, 3, layerMask).Equals(false))
+            if (Physics.CheckSphere(transform.position, baseEnemyStats.AttackRange, layerMask).Equals(false))
             {
                 state.ExitState();
                 SetState(new PathingState(this));
                 attackableInRange = false;
             }
         }
-        Debug.Log("Structure dead");
 
         //Restarts the coroutine upon entering pathing state again
         StartCoroutine(ProximityCheck());
-        Debug.Log("Started Proximity Check again");
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(transform.position, 3);
+        Gizmos.DrawWireSphere(transform.position, baseEnemyStats.AttackRange);
     }
 }
