@@ -24,9 +24,7 @@ namespace StateStuff
         {
             while (npcBehavior.attackableInRange.Equals(false))
             {
-                yield return new WaitForSeconds(.5f);
-                Debug.Log("Pathing");
-                
+                yield return new WaitForSeconds(.25f);               
             }
         }
 

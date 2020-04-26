@@ -26,5 +26,7 @@ public class Barricade : Structure
     private void Update()
     {
         Debug.Log(currentHealth);
+        if (currentHealth <= 0)
+            Destroy(gameObject);
     }
 }

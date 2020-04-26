@@ -29,8 +29,6 @@ public class NPCBehavior : NPCStateMachine
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(state);
-
         if(currentState != state)
         {
             StartCoroutine(state.UpdateState());

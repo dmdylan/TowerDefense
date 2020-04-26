@@ -7,8 +7,8 @@ namespace StateStuff
 {
     class AttackingState : State
     {
-        private List<Collider> attackTargets;
-        private List<IDamageable> attackTargetsTwo;
+        private List<Collider> possibleTargets;
+        private List<IDamageable> targetsToAttack;
 
         public AttackingState(NPCBehavior npcBehavior) : base(npcBehavior)
         {
@@ -17,13 +17,9 @@ namespace StateStuff
 
         public override void EnterState()
         {
-            attackTargets = Physics.OverlapSphere(npcBehavior.transform.position, npcBehavior.baseEnemyStats.AttackRange, npcBehavior.layerMask).ToList();
-            foreach(Collider target in attackTargets)
-            {
-                IDamageable targetScript = target.GetComponent<IDamageable>();
-                //Throws null reference exception
-                attackTargetsTwo.Add(targetScript);
-            }
+            possibleTargets = Physics.OverlapSphere(npcBehavior.transform.position, npcBehavior.baseEnemyStats.AttackRange, npcBehavior.layerMask).ToList();
+            targetsToAttack = new List<IDamageable>();
+            AddTargetsToTargetList();
         }
 
         public override IEnumerator UpdateState()
@@ -31,18 +27,65 @@ namespace StateStuff
             while (npcBehavior.attackableInRange.Equals(true)) 
             { 
                 yield return new WaitForSeconds(npcBehavior.baseEnemyStats.AttackRate);
-                Debug.Log("Attacking");
-                foreach(IDamageable damageable in attackTargetsTwo)
-                {
-                    damageable.TakeDamage(npcBehavior.baseEnemyStats.Damage);
-                    //damageable.GetComponent<IDamageable>().TakeDamage(npcBehavior.baseEnemyStats.Damage);
-                }
+                FaceTheTarget();
+                targetsToAttack.First().TakeDamage(npcBehavior.baseEnemyStats.Damage);
+                RemoveDeadTargetsAndCheckForNewTargets();
             }
         }
 
         public override void ExitState()
         {
 
+        }
+
+        private void AddTargetsToTargetList()
+        {
+            foreach (Collider target in possibleTargets)
+            {
+                IDamageable targetScript = target.GetComponent<IDamageable>();
+                targetsToAttack.Add(targetScript);
+            }
+        }
+
+        private void RemoveDeadTargetsAndCheckForNewTargets()
+        {
+            var newTargets = Physics.OverlapSphere(npcBehavior.transform.position, npcBehavior.baseEnemyStats.AttackRange, npcBehavior.layerMask).ToList();
+
+            if (targetsToAttack.First().Equals(null))
+            {
+                targetsToAttack.RemoveAt(0);
+                //targetsToAttack.RemoveAll(null);
+            }
+
+            if (possibleTargets.First().Equals(null))
+            {
+                possibleTargets.RemoveAt(0);
+                //possibleTargets.RemoveAll(null);
+            }
+
+            foreach (Collider collider in newTargets)
+            {
+                if (!possibleTargets.Contains(collider))
+                {
+                    possibleTargets.Add(collider);
+                    targetsToAttack.Add(collider.GetComponent<IDamageable>());
+                }
+            }
+        }
+
+        //make separate method to return transform of current target and then use this to face it?
+        //Lerp to face is slowly
+        private void FaceTheTarget()
+        {
+            if (possibleTargets.Count.Equals(0))
+                return;
+
+            if (possibleTargets.First().Equals(null))
+                return;
+
+            var targetTransform = possibleTargets.First().gameObject.GetComponent<Transform>();
+
+            npcBehavior.transform.LookAt(targetTransform);
         }
     }
 }
