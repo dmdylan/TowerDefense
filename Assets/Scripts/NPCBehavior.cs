@@ -41,7 +41,7 @@ public class NPCBehavior : NPCStateMachine
         //while there are no objects to attack in attack range
         while (attackableInRange.Equals(false))
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(.25f);
             //Checks for any structures in attack range, if there are then it 
             //changes to attack state and sets bool to true
             if(Physics.CheckSphere(transform.position, baseEnemyStats.AttackRange, layerMask))
@@ -56,7 +56,7 @@ public class NPCBehavior : NPCStateMachine
         //while there is an object in range to attack
         while (attackableInRange.Equals(true))
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(.25f);
 
             //checks if there are no structures in range to attack (the structure was destroyed)
             //if so it changes back to pathing state and sets bool to false
