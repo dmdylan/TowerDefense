@@ -48,6 +48,7 @@ public class PlayerMovementController : MonoBehaviour
 
 		// input
 		Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+		Vector2 mouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
 		Vector2 inputDir = input.normalized;
 		bool running = Input.GetKey(KeyCode.LeftShift);
 
