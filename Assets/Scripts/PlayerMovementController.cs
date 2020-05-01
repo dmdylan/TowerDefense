@@ -2,111 +2,49 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
 public class PlayerMovementController : MonoBehaviour
 {
-	[SerializeField] private float walkSpeed = 2;
-	[SerializeField] private float runSpeed = 6;
-	[SerializeField] private float gravity = -12;
-	[SerializeField] private float jumpHeight = 1;
+    private CharacterController playerController;
+    [SerializeField] private float speed = 12f;
+    [SerializeField] private float gravity = -9.81f;
+    [SerializeField] private float jumpHeight = 0.001f;
 
-	[Range(0, 1)]
-	public float airControlPercent;
+    [SerializeField] private Transform groundCheck = null;
+    [SerializeField] private float groundDistance = 0.4f;
+    [SerializeField] private LayerMask groundMask;
 
-	[SerializeField] private float turnSmoothTime = 0.2f;
-	float turnSmoothVelocity;
+    Vector3 velocity;
+    bool isGrounded;
 
-	[SerializeField] private float speedSmoothTime = 0.1f;
-	float speedSmoothVelocity;
-	float currentSpeed;
-	float velocityY;
+    void Awake()
+    {
+        playerController = GetComponent<CharacterController>();
+    }
 
-	//Animator animator;
-	[SerializeField] Transform cameraT;
-	CharacterController controller;
+    // Update is called once per frame
+    void Update()
+    {
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
-	private void Start()
-	{
-		//animator = GetComponent<Animator>();
-		cameraT = Camera.main.transform;
-		controller = GetComponent<CharacterController>();
+        if (isGrounded && velocity.y < 0)
+        {
+            velocity.y = -2;
+        }
 
-		Cursor.visible = false;
-		Cursor.lockState = CursorLockMode.Locked;
-	}
+        float x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
 
-	void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.Escape))
-		{
-			Cursor.visible = !Cursor.visible;
-			if (Cursor.lockState == CursorLockMode.Locked)
-				Cursor.lockState = CursorLockMode.Confined;
-			else
-				Cursor.lockState = CursorLockMode.Locked;
-		}
+        Vector3 move = transform.right * x + transform.forward * z;
 
-		// input
-		Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-		Vector2 mouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
-		Vector2 inputDir = input.normalized;
-		bool running = Input.GetKey(KeyCode.LeftShift);
+        playerController.Move(move * speed * Time.deltaTime);
 
-		Move(inputDir, running);
+        if (Input.GetButtonDown("Jump") && isGrounded)
+        {
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
 
-		if (Input.GetKeyDown(KeyCode.Space))
-		{
-			Jump();
-		}
+        velocity.y += gravity * Time.deltaTime;
 
-		// animator
-		float animationSpeedPercent = ((running) ? currentSpeed / runSpeed : currentSpeed / walkSpeed * .5f);
-		//animator.SetFloat("SpeedPercentage", animationSpeedPercent, speedSmoothTime, Time.deltaTime);
-	}
-
-	void Move(Vector2 inputDir, bool running)
-	{
-		if (inputDir != Vector2.zero)
-		{
-			float targetRotation = Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg + cameraT.eulerAngles.y;
-			transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref turnSmoothVelocity, GetModifiedSmoothTime(turnSmoothTime));
-		}
-
-		float targetSpeed = ((running) ? runSpeed : walkSpeed) * inputDir.magnitude;
-		currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref speedSmoothVelocity, GetModifiedSmoothTime(speedSmoothTime));
-
-		velocityY += Time.deltaTime * gravity;
-		Vector3 velocity = transform.forward * currentSpeed + Vector3.up * velocityY;
-
-		controller.Move(velocity * Time.deltaTime);
-		currentSpeed = new Vector2(controller.velocity.x, controller.velocity.z).magnitude;
-
-		if (controller.isGrounded)
-		{
-			velocityY = 0;
-		}
-	}
-
-	void Jump()
-	{
-		if (controller.isGrounded)
-		{
-			float jumpVelocity = Mathf.Sqrt(-2 * gravity * jumpHeight);
-			velocityY = jumpVelocity;
-		}
-	}
-
-	float GetModifiedSmoothTime(float smoothTime)
-	{
-		if (controller.isGrounded)
-		{
-			return smoothTime;
-		}
-
-		if (airControlPercent == 0)
-		{
-			return float.MaxValue;
-		}
-		return smoothTime / airControlPercent;
-	}
+        playerController.Move(velocity * Time.deltaTime);
+    }
 }
