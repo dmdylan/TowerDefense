@@ -11,7 +11,7 @@ public class PlayerMovementController : MonoBehaviour
 
     [SerializeField] private Transform groundCheck = null;
     [SerializeField] private float groundDistance = 0.4f;
-    [SerializeField] private LayerMask groundMask;
+    [SerializeField] private LayerMask groundMask = 0;
 
     Vector3 velocity;
     bool isGrounded;
