@@ -15,13 +15,25 @@ public class StructurePlacement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+            SpawnStructure();
     }
 
     public void SpawnStructure()
     {
-        Vector3 middleScreenPosition = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2));
+        Debug.Log("Placing barricade");
+        //if (Input.GetMouseButtonDown(1))
+        //    return;
 
-        GameObject barricade = Instantiate(structurePrefab, middleScreenPosition, Quaternion.Euler(middleScreenPosition.x, middleScreenPosition.y, middleScreenPosition.z));
+        GameObject barricade = Instantiate(structurePrefab);
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hitInfo;
+
+        if(Physics.Raycast(ray, out hitInfo))
+        {
+            barricade.transform.position = hitInfo.point;
+            barricade.transform.rotation = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
+        }
     }
 }
