@@ -15101,6 +15101,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   structurePrefab: {fileID: 6892208806906919895, guid: d3e078ebbb93a4d47a1a4f7fbd754d20,
     type: 3}
+  structurePlaceholderModel:
+  - {fileID: 115443043164965812, guid: 87adbd21ab840934eb419973050f4d67, type: 3}
 --- !u!4 &1531438353
 Transform:
   m_ObjectHideFlags: 0
