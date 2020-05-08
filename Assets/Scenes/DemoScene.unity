@@ -15099,8 +15099,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90ef28f1deb4ca64a8a4fd116d0b9b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  structurePrefab: {fileID: 6892208806906919895, guid: d3e078ebbb93a4d47a1a4f7fbd754d20,
-    type: 3}
+  structurePrefabs:
+  - {fileID: 6892208806906919895, guid: d3e078ebbb93a4d47a1a4f7fbd754d20, type: 3}
   structurePlaceholderModel:
   - {fileID: 115443043164965812, guid: 87adbd21ab840934eb419973050f4d67, type: 3}
 --- !u!4 &1531438353
@@ -15111,7 +15111,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1531438351}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 120.61164, y: 79.000046, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
