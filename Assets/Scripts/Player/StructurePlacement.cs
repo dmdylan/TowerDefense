@@ -43,6 +43,8 @@ public class StructurePlacement : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             SpawnStructure(structureHolder, previewObject);
+            //Calls event that structure was built
+            GameEvents.Instance.BuiltAStructure();
             Destroy(previewObject);
             structureToPlace = 0;
         }
