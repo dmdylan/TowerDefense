@@ -5,7 +5,7 @@ using UnityEngine;
 using StateStuff;
 using System.Linq;
 
-public class NPCBehavior : NPCStateMachine
+public class NPCBehavior : NPCStateMachine, IPoolObject
 {
     public Transform objective = null;
     public BaseEnemyStats baseEnemyStats;
@@ -75,5 +75,18 @@ public class NPCBehavior : NPCStateMachine
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(transform.position, baseEnemyStats.AttackRange);
+    }
+
+    public void OnObjectReuse()
+    {
+        SetState(new PathingState(this));
+        currentState = state;
+        StartCoroutine(ProximityCheck());
+        StartCoroutine(state.UpdateState());
+    }
+
+    public void Destroy()
+    {
+        throw new System.NotImplementedException();
     }
 }

@@ -23,7 +23,7 @@ public class PoolManager : MonoBehaviour
     {
         int poolKey = prefab.GetInstanceID();
 
-        GameObject poolHolder = new GameObject(prefab.name + "Pool");
+        GameObject poolHolder = new GameObject(prefab.name + " Pool");
         poolHolder.transform.parent = transform;
 
         if (!poolDictionary.ContainsKey(poolKey))
