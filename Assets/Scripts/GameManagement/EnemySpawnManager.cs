@@ -19,9 +19,9 @@ public class EnemySpawnManager : MonoBehaviour
 
     void SetEnemyObjective(GameObject enemyPrefab, Spawner enemySpawner)
     {
-        //if (!enemyPrefab.GetComponent<NPCBehavior>())
-        //    return;
-        //else
+        if (!enemyPrefab.GetComponent<NPCBehavior>())
+            return;
+        else
             enemyPrefab.GetComponent<NPCBehavior>().objective = enemySpawner.Objective;        
     }
 

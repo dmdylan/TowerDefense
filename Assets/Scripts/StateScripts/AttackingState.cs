@@ -12,7 +12,6 @@ namespace StateStuff
 
         public AttackingState(NPCBehavior npcBehavior) : base(npcBehavior)
         {
-            EnterState();
         }
 
         public override void EnterState()

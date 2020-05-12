@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private Transform objective;
+    [SerializeField] private Transform objective = null;
     public Transform Objective => objective;
 }

@@ -19,11 +19,18 @@ public class NPCBehavior : NPCStateMachine, IPoolObject
     // Start is called before the first frame update
     void Start()
     { 
+    }
+
+    private void OnEnable()
+    {
        navMeshAgent = GetComponent<NavMeshAgent>();
-       SetState(new PathingState(this));
-       currentState = state;
-       StartCoroutine(ProximityCheck());
-       StartCoroutine(state.UpdateState());
+       //navMeshAgent.updatePosition = false;
+       navMeshAgent.enabled = false;
+       //SetState(new PathingState(this));
+       //currentState = state;
+       //StartCoroutine(ProximityCheck());
+       //StartCoroutine(state.UpdateState());
+        
     }
 
     // Update is called once per frame
@@ -46,7 +53,6 @@ public class NPCBehavior : NPCStateMachine, IPoolObject
             //changes to attack state and sets bool to true
             if(Physics.CheckSphere(transform.position, baseEnemyStats.AttackRange, layerMask))
             {
-
                 state.ExitState();
                 SetState(new AttackingState(this));
                 attackableInRange = true;
@@ -79,6 +85,8 @@ public class NPCBehavior : NPCStateMachine, IPoolObject
 
     public void OnObjectReuse()
     {
+        //navMeshAgent = GetComponent<NavMeshAgent>();
+        //navMeshAgent.updatePosition = true;
         SetState(new PathingState(this));
         currentState = state;
         StartCoroutine(ProximityCheck());

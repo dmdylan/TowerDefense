@@ -7,17 +7,19 @@ namespace StateStuff
     {
         public PathingState(NPCBehavior npcBehavior) : base(npcBehavior)
         {
-            EnterState();
         }
 
         public override void EnterState()
         {
-            if (npcBehavior.navMeshAgent.Equals(null))
-                return;
+            npcBehavior.navMeshAgent.enabled = true;
+
+            if (npcBehavior.navMeshAgent.Equals(null))           
+                return;         
             else if (npcBehavior.navMeshAgent.isStopped)          
                 npcBehavior.navMeshAgent.isStopped = false;           
-            else
-                npcBehavior.navMeshAgent.SetDestination(npcBehavior.objective.position);
+      
+            else          
+                npcBehavior.navMeshAgent.SetDestination(npcBehavior.objective.position);           
         }
 
         public override IEnumerator UpdateState()
