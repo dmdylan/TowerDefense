@@ -18,3 +18,5 @@ MonoBehaviour:
   attackType: 0
   attackRange: 1.5
   attackRate: 1
+  enemyCountValue: 1
+  enemyID: 0
