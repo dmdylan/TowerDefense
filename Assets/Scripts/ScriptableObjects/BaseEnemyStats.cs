@@ -11,7 +11,10 @@ public class BaseEnemyStats : ScriptableObject
     [SerializeField] private AttackType attackType = AttackType.Melee;
     [SerializeField] private float attackRange = 1;
     [SerializeField] private float attackRate = 1;
+    [SerializeField] private int pointValue = 0;
+    [SerializeField] private float timeBetweenSpawn = 0;
     [SerializeField] private int enemyCountValue = 0;
+    [SerializeField] private float threatLevel = 0;
     [SerializeField] private int enemyID = 0;
 
     public float MovementSpeed => movementSpeed;
@@ -20,6 +23,9 @@ public class BaseEnemyStats : ScriptableObject
     public AttackType AttackType => attackType;
     public float AttackRange => attackRange;
     public float AttackRate => attackRate;
+    public int PointValue => pointValue;
+    public float TimeBetweenSpawn => timeBetweenSpawn;
     public int EnemyCountValue => enemyCountValue;
+    public float ThreatLevel => threatLevel;
     public int EnemyID => enemyID;
 }
