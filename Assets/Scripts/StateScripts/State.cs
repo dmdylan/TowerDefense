@@ -6,11 +6,11 @@ namespace StateStuff
 {
     public abstract class State
     {
-        protected NPCBehavior npcBehavior;
+        protected Enemy enemy;
         
-        public State(NPCBehavior npcBehavior)
+        public State(Enemy enemy)
         {
-            this.npcBehavior = npcBehavior;
+            this.enemy = enemy;
         }
 
         public virtual void EnterState()

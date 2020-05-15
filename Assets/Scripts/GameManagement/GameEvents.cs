@@ -21,4 +21,10 @@ public class GameEvents : MonoBehaviour
 
     public event Action OnBuiltAStructure;
     public void BuiltAStructure() => OnBuiltAStructure?.Invoke();
+
+    public event Action OnWaveStarted;
+    public void WaveStarted() => OnWaveStarted?.Invoke();
+
+    public event Action OnWaveEnded;
+    public void WaveEnded() => OnWaveEnded?.Invoke();
 }

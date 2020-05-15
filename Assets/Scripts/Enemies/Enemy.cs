@@ -5,7 +5,7 @@ using UnityEngine;
 using StateStuff;
 using System.Linq;
 
-public class NPCBehavior : NPCStateMachine, IPoolObject
+public class Enemy : NPCStateMachine, IPoolObject
 {
     public Transform objective = null;
     public BaseEnemyStats baseEnemyStats;
@@ -13,8 +13,6 @@ public class NPCBehavior : NPCStateMachine, IPoolObject
     public bool attackableInRange = false;
     public readonly int layerMask = 1 << 8;
     private State currentState;
-    
-    //TODO: Setup way in code for object to be auto assigned to enemy through code
 
     // Start is called before the first frame update
     void Start()
@@ -29,8 +27,7 @@ public class NPCBehavior : NPCStateMachine, IPoolObject
        //SetState(new PathingState(this));
        //currentState = state;
        //StartCoroutine(ProximityCheck());
-       //StartCoroutine(state.UpdateState());
-        
+       //StartCoroutine(state.UpdateState());       
     }
 
     // Update is called once per frame

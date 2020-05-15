@@ -10,24 +10,24 @@ namespace StateStuff
         private List<Collider> possibleTargets;
         private List<IDamageable> targetsToAttack;
 
-        public AttackingState(NPCBehavior npcBehavior) : base(npcBehavior)
+        public AttackingState(Enemy enemy) : base(enemy)
         {
         }
 
         public override void EnterState()
         {
-            possibleTargets = Physics.OverlapSphere(npcBehavior.transform.position, npcBehavior.baseEnemyStats.AttackRange, npcBehavior.layerMask).ToList();
+            possibleTargets = Physics.OverlapSphere(enemy.transform.position, enemy.baseEnemyStats.AttackRange, enemy.layerMask).ToList();
             targetsToAttack = new List<IDamageable>();
             AddTargetsToTargetList();
         }
 
         public override IEnumerator UpdateState()
         {
-            while (npcBehavior.attackableInRange.Equals(true)) 
+            while (enemy.attackableInRange.Equals(true)) 
             { 
-                yield return new WaitForSeconds(npcBehavior.baseEnemyStats.AttackRate);
+                yield return new WaitForSeconds(enemy.baseEnemyStats.AttackRate);
                 FaceTheTarget();
-                targetsToAttack.First().TakeDamage(npcBehavior.baseEnemyStats.Damage);
+                targetsToAttack.First().TakeDamage(enemy.baseEnemyStats.Damage);
                 RemoveDeadTargetsAndCheckForNewTargets();
             }
         }
@@ -48,7 +48,7 @@ namespace StateStuff
 
         private void RemoveDeadTargetsAndCheckForNewTargets()
         {
-            var newTargets = Physics.OverlapSphere(npcBehavior.transform.position, npcBehavior.baseEnemyStats.AttackRange, npcBehavior.layerMask).ToList();
+            var newTargets = Physics.OverlapSphere(enemy.transform.position, enemy.baseEnemyStats.AttackRange, enemy.layerMask).ToList();
 
             if (targetsToAttack.First().Equals(null))
             {
@@ -84,7 +84,7 @@ namespace StateStuff
 
             var targetTransform = possibleTargets.First().gameObject.GetComponent<Transform>();
 
-            npcBehavior.transform.LookAt(targetTransform);
+            enemy.transform.LookAt(targetTransform);
         }
     }
 }

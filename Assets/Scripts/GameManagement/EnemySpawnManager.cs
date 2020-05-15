@@ -19,16 +19,15 @@ public class EnemySpawnManager : MonoBehaviour
 
     void SetEnemyObjective(GameObject enemyPrefab, Spawner enemySpawner)
     {
-        if (!enemyPrefab.GetComponent<NPCBehavior>())
+        if (!enemyPrefab.GetComponent<Enemy>())
             return;
         else
-            enemyPrefab.GetComponent<NPCBehavior>().objective = enemySpawner.Objective;        
+            enemyPrefab.GetComponent<Enemy>().objective = enemySpawner.Objective;        
     }
 
     public void SpawnEnemies(GameObject enemyPrefab, Spawner enemySpawner)
     {
         SetEnemyObjective(enemyPrefab, enemySpawner);
         PoolManager.Instance.ReuseObject(enemyPrefab, enemySpawner.transform.position, enemySpawner.transform.rotation);
-        Debug.Log(enemySpawner.transform.position);
     }
 }

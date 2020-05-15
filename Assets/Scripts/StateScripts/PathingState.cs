@@ -5,26 +5,26 @@ namespace StateStuff
 {
     class PathingState : State
     {
-        public PathingState(NPCBehavior npcBehavior) : base(npcBehavior)
+        public PathingState(Enemy enemy) : base(enemy)
         {
         }
 
         public override void EnterState()
         {
-            npcBehavior.navMeshAgent.enabled = true;
+            enemy.navMeshAgent.enabled = true;
 
-            if (npcBehavior.navMeshAgent.Equals(null))           
+            if (enemy.navMeshAgent.Equals(null))           
                 return;         
-            else if (npcBehavior.navMeshAgent.isStopped)          
-                npcBehavior.navMeshAgent.isStopped = false;           
+            else if (enemy.navMeshAgent.isStopped)          
+                enemy.navMeshAgent.isStopped = false;           
       
             else          
-                npcBehavior.navMeshAgent.SetDestination(npcBehavior.objective.position);           
+                enemy.navMeshAgent.SetDestination(enemy.objective.position);           
         }
 
         public override IEnumerator UpdateState()
         {
-            while (npcBehavior.attackableInRange.Equals(false))
+            while (enemy.attackableInRange.Equals(false))
             {
                 yield return new WaitForSeconds(.25f);               
             }
@@ -32,7 +32,7 @@ namespace StateStuff
 
         public override void ExitState()
         {
-            npcBehavior.navMeshAgent.isStopped = true;
+            enemy.navMeshAgent.isStopped = true;
         }
     }
 }
