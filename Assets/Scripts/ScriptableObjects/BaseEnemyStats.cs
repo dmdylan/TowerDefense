@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 public enum AttackType { Melee, Ranged }
+public enum EnemyType { Small, Medium, Large, Boss }
 
 [CreateAssetMenu (fileName = "New Enemy Stats", menuName = "Enemy/New Enemy Stats")]
 public class BaseEnemyStats : ScriptableObject
@@ -16,6 +17,8 @@ public class BaseEnemyStats : ScriptableObject
     [SerializeField] private int enemyCountValue = 0;
     [SerializeField] private float threatLevel = 0;
     [SerializeField] private int enemyID = 0;
+    [SerializeField] private EnemyType enemyType = EnemyType.Small;
+    private int allowedPerWave = 0;
 
     public float MovementSpeed => movementSpeed;
     public float MaxHealth => maxHealth;
@@ -28,4 +31,25 @@ public class BaseEnemyStats : ScriptableObject
     public int EnemyCountValue => enemyCountValue;
     public float ThreatLevel => threatLevel;
     public int EnemyID => enemyID;
+    public EnemyType EnemyType => enemyType;
+    public int AllowedPerWave
+    {
+        get
+        {
+            if (EnemyType.Equals(EnemyType.Small) || EnemyType.Equals(EnemyType.Medium))
+            {
+                allowedPerWave = int.MaxValue;
+            }
+            else if (EnemyType.Equals(EnemyType.Large))
+            {
+                allowedPerWave = 100;
+            }
+            else if (EnemyType.Equals(EnemyType.Boss))
+            {
+                allowedPerWave = 5;
+            }
+
+            return allowedPerWave;
+        }
+    }
 }
