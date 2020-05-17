@@ -14926,6 +14926,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3fd3d04a39ad5c41a6330132944c94d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelDifficulty: {fileID: 11400000, guid: 4646a02a71c18334294be8eb372e835a, type: 2}
+  levelLength: {fileID: 11400000, guid: 7fd496763334595409563e11b96856ca, type: 2}
+  enemyPrefabs:
+  - {fileID: 8089473039854980466, guid: b7326b9b1cf9e3246bf8d78bbe44b757, type: 3}
 --- !u!1001 &1322659375
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19123,14 +19127,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32a190098cc30754c85f07a23693378e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waves:
-  - threatLevel: 0
-    enemiesToSpawn:
-    - {fileID: 0}
-    totalEnemyCountValue: 0
-    enemyCount: 0
-  enemyPrefabs:
-  - {fileID: 8089473039854980466, guid: b7326b9b1cf9e3246bf8d78bbe44b757, type: 3}
   spawners:
   - {fileID: 1283240367}
   - {fileID: 807440039}

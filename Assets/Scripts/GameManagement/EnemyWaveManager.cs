@@ -6,12 +6,28 @@ using UnityEngine;
 
 public class EnemyWaveManager : MonoBehaviour
 {
-    enum SpawningState { Spawning, NothingLeftToSpawn, BetweenWaves };
-    public Wave[] waves;
+    #region Instance
+    static EnemyWaveManager instance;
 
-    [SerializeField] private GameObject[] enemyPrefabs = null;
+    public EnemyWaveManager Instance 
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<EnemyWaveManager>();
+            }
+            return instance;
+        }
+    }
+    #endregion
+
+    enum SpawningState { Spawning, NothingLeftToSpawn, BetweenWaves };
+    public Wave[][] waves;
+
     [SerializeField] private Spawner[] spawners = null;
     int spawnerNumber = 0;
+    GameObject[] enemyPrefabs = null;
 
     private bool isSpawning = false;
     SpawningState state = SpawningState.Spawning;
@@ -28,35 +44,17 @@ public class EnemyWaveManager : MonoBehaviour
         GameEvents.Instance.OnWaveStarted -= Instance_OnWaveStarted;
     }
 
-    private void Instance_OnWaveStarted()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    private void Instance_OnWaveEnded()
-    {
-        isSpawning = false;
-        currentWave++;
-    }
-
     // Start is called before the first frame update
     void Start()
     {
-        //maybe create a better way to identify enemies...
-        //use their ID?
-        foreach(GameObject enemy in enemyPrefabs)
-        {
-            var numberToPool = enemy.GetComponent<Enemy>().baseEnemyStats.EnemyCountValue;
+        enemyPrefabs = GameManager.Instance.EnemyPrefabs;
 
-            if(numberToPool == 25)
-                PoolManager.Instance.CreatePool(enemy, 2);
-            else if(numberToPool == 20)
-                PoolManager.Instance.CreatePool(enemy, 10);
-            else if (numberToPool == 15)
-                PoolManager.Instance.CreatePool(enemy, 20);
-            else
-                PoolManager.Instance.CreatePool(enemy, 30);
-        }
+        if(GameManager.Instance.LevelLength.Length.Equals(0))
+            waves = new Wave[5][];
+        else if (GameManager.Instance.LevelLength.Length.Equals(1))
+            waves = new Wave[7][];
+        else
+            waves = new Wave[10][];
 
         //Don't call it at the start, have a game event set up for player to start when ready
         //just calling at the start for testing purposes
@@ -69,6 +67,8 @@ public class EnemyWaveManager : MonoBehaviour
         spawnerNumber = Random.Range(0, spawners.Length);
     }
 
+    //Need a way to check and hold timer of most recent enemy spawn to prevent quick spawning of said enemy
+    //or do we just not care about that?
     IEnumerator SpawnEnemies(GameObject enemy, Spawner[] spawnLocation)
     {
         yield return new WaitForSeconds(2);
@@ -76,61 +76,44 @@ public class EnemyWaveManager : MonoBehaviour
         StartCoroutine(SpawnEnemies(enemy, spawnLocation));
     }
 
-    public Transform enemy;
-
-    public float timeBetweenWaves = 5f;
-    public float countDown = 2f;
-
-    //public float searchCountdown = 1f; 
-
-    private List<Transform> enemies = new List<Transform>();
-    private int waveIndex = 0;
-
     // this replaces your Update method
-    private IEnumerator RunSpawner()
+    //private IEnumerator RunSpawner()
+    //{
+    //    // first time wait 2 seconds
+    //    yield return new WaitForSeconds(countDown);
+    //
+    //    // run this routine infinite
+    //    while (true)
+    //    {
+    //        state = SpawningState.Spawning;
+    //
+    //        // do the spawning and at the same time wait until it's finished
+    //        yield return SpawnWave();
+    //
+    //        state = SpawningState.NothingLeftToSpawn;
+    //
+    //        // wait until all enemies died (are destroyed)
+    //        yield return new WaitWhile(EnemyisAlive);
+    //
+    //        state = SpawningState.BetweenWaves;
+    //
+    //    // wait 5 seconds
+    //        yield return new WaitForSeconds(timeBetweenWaves);
+    //    }
+    //}
+
+    #region Events
+    private void Instance_OnWaveStarted()
     {
-        // first time wait 2 seconds
-        yield return new WaitForSeconds(countDown);
-
-        // run this routine infinite
-        while (true)
-        {
-            state = SpawningState.Spawning;
-
-            // do the spawning and at the same time wait until it's finished
-            yield return SpawnWave();
-
-            state = SpawningState.NothingLeftToSpawn;
-
-            // wait until all enemies died (are destroyed)
-            yield return new WaitWhile(EnemyisAlive);
-
-            state = SpawningState.BetweenWaves;
-    
-        // wait 5 seconds
-            yield return new WaitForSeconds(timeBetweenWaves);
-        }
+        isSpawning = true;
+        state = SpawningState.Spawning;
     }
 
-    private bool EnemyisAlive()
+    private void Instance_OnWaveEnded()
     {
-        // uses Linq to filter out null (previously detroyed) entries
-        enemies = enemies.Where(e => e != null).ToList();
-        return enemies.Count > 0;
+        isSpawning = false;
+        state = SpawningState.NothingLeftToSpawn;
+        currentWave++;
     }
-
-    private IEnumerator SpawnWave()
-    {
-        waveIndex++;
-        for (int i = 0; i < waveIndex; i++)
-        {
-            SpawnEnemy();
-            yield return new WaitForSeconds(0.5f);
-        }
-    }
-
-    private void SpawnEnemy()
-    {
-        enemies.Add(Instantiate(enemy, transform.position, transform.rotation));
-    }
+    #endregion
 }

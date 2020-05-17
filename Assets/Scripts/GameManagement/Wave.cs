@@ -43,7 +43,9 @@ public class Wave
             if (CheckEnemyListCount(enemyToAdd, enemiesThatWillSpawn) < enemyToAdd.GetComponent<Enemy>().baseEnemyStats.AllowedPerWave)
                 enemiesThatWillSpawn.Add(enemyToAdd);
             else
-                possibleEnemiesThatCanSpawn.Remove(enemyToAdd);            
+                possibleEnemiesThatCanSpawn.Remove(enemyToAdd);
+
+            i += enemyToAdd.GetComponent<Enemy>().baseEnemyStats.EnemyCountValue; 
         }
 
         var newWave = new Wave(enemiesThatWillSpawn.ToArray());
