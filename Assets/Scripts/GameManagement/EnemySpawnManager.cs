@@ -25,9 +25,10 @@ public class EnemySpawnManager : MonoBehaviour
             enemyPrefab.GetComponent<Enemy>().objective = enemySpawner.Objective;        
     }
 
+    //sometimes has issues assigning objective to enemy
     public void SpawnEnemies(GameObject enemyPrefab, Spawner enemySpawner)
     {
-        PoolManager.Instance.ReuseObject(enemyPrefab, enemySpawner.transform.position, enemySpawner.transform.rotation);
         SetEnemyObjective(enemyPrefab, enemySpawner);
+        PoolManager.Instance.ReuseObject(enemyPrefab, enemySpawner.transform.position, enemySpawner.transform.rotation);
     }
 }
