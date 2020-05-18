@@ -23,7 +23,7 @@ public class EnemyWaveManager : MonoBehaviour
     #endregion
 
     enum SpawningState { Spawning, NothingLeftToSpawn, BetweenWaves };
-    public Wave[][] waves;
+    public Wave[] waves;
 
     [SerializeField] private Spawner[] spawners = null;
     int spawnerNumber = 0;
@@ -49,19 +49,20 @@ public class EnemyWaveManager : MonoBehaviour
     {
         enemyPrefabs = GameManager.Instance.EnemyPrefabs;
 
-        if(GameManager.Instance.LevelLength.Length.Equals(0))
-            waves = new Wave[5][];
-        else if (GameManager.Instance.LevelLength.Length.Equals(1))
-            waves = new Wave[7][];
+        if(GameManager.Instance.LevelLength.Length.Equals(Length.Short))
+            waves = new Wave[5];
+        else if (GameManager.Instance.LevelLength.Length.Equals(Length.Medium))
+            waves = new Wave[7];
         else
-            waves = new Wave[10][];
+            waves = new Wave[10];
 
-        foreach(Wave[] wave in waves)
-        {
-            //wave[]= GenerateNewWave(enemyPrefabs, GameManager.Instance.CurrentThreatLevel);
+        for (int i = 0; i < waves.Length; i++)
+        { 
+            waves[i] = GenerateNewWave(enemyPrefabs, GameManager.Instance.CurrentThreatLevel);       
         }
 
-        Debug.Log(waves);
+        Debug.Log(waves.Length);
+
         //Don't call it at the start, have a game event set up for player to start when ready
         //just calling at the start for testing purposes
         StartCoroutine(SpawnEnemies(enemyPrefabs[0], spawners));
@@ -75,9 +76,10 @@ public class EnemyWaveManager : MonoBehaviour
 
     //Need a way to check and hold timer of most recent enemy spawn to prevent quick spawning of said enemy
     //or do we just not care about that?
+    //Needs to take in a wave instead of an enemy?
     IEnumerator SpawnEnemies(GameObject enemy, Spawner[] spawnLocation)
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(enemy.GetComponent<Enemy>().baseEnemyStats.TimeBetweenSpawn);
         EnemySpawnManager.Instance.SpawnEnemies(enemy, spawnLocation[spawnerNumber]);
         StartCoroutine(SpawnEnemies(enemy, spawnLocation));
     }
