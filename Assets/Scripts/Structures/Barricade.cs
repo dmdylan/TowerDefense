@@ -28,5 +28,4 @@ public class Barricade : Structure
         if (currentHealth <= 0)
             Destroy(gameObject);
     }
-
 }

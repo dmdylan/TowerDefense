@@ -15,19 +15,14 @@ public class Enemy : NPCStateMachine, IPoolObject
     private State currentState;
 
     // Start is called before the first frame update
-    void Start()
-    { 
-    }
+    //void Start()
+    //{ 
+    //}
 
     private void OnEnable()
     {
        navMeshAgent = GetComponent<NavMeshAgent>();
-       //navMeshAgent.updatePosition = false;
        navMeshAgent.enabled = false;
-       //SetState(new PathingState(this));
-       //currentState = state;
-       //StartCoroutine(ProximityCheck());
-       //StartCoroutine(state.UpdateState());       
     }
 
     // Update is called once per frame

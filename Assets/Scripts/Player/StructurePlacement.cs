@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//Maybe set this up to be triggered as an event?
+//Coroutine?
+//Player has owns states?
 public class StructurePlacement : MonoBehaviour
 {            
     [SerializeField] private GameObject[] structurePrefabs = null;

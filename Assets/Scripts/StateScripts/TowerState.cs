@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections;
-using UnityEngine;
 
 namespace StateStuff
 {
-    public abstract class State
+    public abstract class TowerState
     {
-        protected Enemy enemy;
-        
-        public State(Enemy enemy)
+        protected Structure structure;
+
+        public TowerState(Structure structure)
         {
-            this.enemy = enemy;
+            this.structure = structure;
         }
 
         public abstract void EnterState();
-
         public abstract IEnumerator UpdateState();
-
         public abstract void ExitState();
     }
 }
