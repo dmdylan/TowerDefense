@@ -20,6 +20,7 @@ MonoBehaviour:
   attackRate: 1
   pointValue: 5
   timeBetweenSpawn: 1
-  enemyCountValue: 1
+  enemyCountValue: 2
   threatLevel: 1
   enemyID: 0
+  enemyType: 0

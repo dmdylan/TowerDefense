@@ -1,17 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using UnityEditor.ProjectWindowCallback;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Wave
 {
-    private GameObject[] enemiesToSpawn;
+    public GameObject[] EnemiesToSpawn { get; }
 
     //Wave should only include the enemies that are going to spawn
     //all other info should be calculated outside and passed in
     public Wave(GameObject[] enemiesInWave)
     {
-        enemiesToSpawn = enemiesInWave;
+        EnemiesToSpawn = enemiesInWave;
     }
 }

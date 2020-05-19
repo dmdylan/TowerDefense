@@ -32,6 +32,8 @@ public class BaseEnemyStats : ScriptableObject
     public float ThreatLevel => threatLevel;
     public int EnemyID => enemyID;
     public EnemyType EnemyType => enemyType;
+
+    //Increase as time threat level increases?
     public int AllowedPerWave
     {
         get

@@ -24,14 +24,15 @@ public class EnemyWaveManager : MonoBehaviour
 
     enum SpawningState { Spawning, NothingLeftToSpawn, BetweenWaves };
     public Wave[] waves;
+    int enemiesInWave;
 
     [SerializeField] private Spawner[] spawners = null;
     int spawnerNumber = 0;
     GameObject[] enemyPrefabs = null;
 
-    private bool isSpawning = false;
+    private bool waveOngoing = false;
     SpawningState state = SpawningState.Spawning;
-    int currentWave = 1;
+    private int currentWave;
 
     private void OnEnable()
     {
@@ -48,6 +49,7 @@ public class EnemyWaveManager : MonoBehaviour
     void Start()
     {
         enemyPrefabs = GameManager.Instance.EnemyPrefabs;
+        currentWave = 1;
 
         if(GameManager.Instance.LevelLength.Length.Equals(Length.Short))
             waves = new Wave[5];
@@ -56,16 +58,18 @@ public class EnemyWaveManager : MonoBehaviour
         else
             waves = new Wave[10];
 
-        for (int i = 0; i < waves.Length; i++)
-        { 
-            waves[i] = GenerateNewWave(enemyPrefabs, GameManager.Instance.CurrentThreatLevel);       
-        }
-
-        Debug.Log(waves.Length);
+        //Generate the first wave
+        waves[0] = GenerateNewWave(enemyPrefabs, GameManager.Instance.CurrentThreatLevel);
+        
+        //Debug contents of the wave
+        //for (int i = 0; i < waves[0].EnemiesToSpawn.Length; i++)
+        //{ 
+        //    Debug.Log(waves[0].EnemiesToSpawn[i]);
+        //}
 
         //Don't call it at the start, have a game event set up for player to start when ready
         //just calling at the start for testing purposes
-        StartCoroutine(SpawnEnemies(enemyPrefabs[0], spawners));
+        StartCoroutine(SpawnEnemies(waves[currentWave-1], spawners));
     }
 
     // Update is called once per frame
@@ -74,47 +78,46 @@ public class EnemyWaveManager : MonoBehaviour
         spawnerNumber = Random.Range(0, spawners.Length);
     }
 
+    // this replaces your Update method
+    private IEnumerator RunSpawner()
+    {    
+        // run this routine infinite
+        while (waveOngoing)
+        {
+            state = SpawningState.Spawning;
+    
+            // do the spawning and at the same time wait until it's finished
+            yield return StartCoroutine(SpawnEnemies(waves[currentWave-1], spawners));
+    
+            state = SpawningState.NothingLeftToSpawn;
+    
+            // wait until all enemies died (are destroyed)
+            yield return new WaitWhile(() => enemiesInWave > 0);
+    
+            state = SpawningState.BetweenWaves;
+        }
+    }
+
     //Need a way to check and hold timer of most recent enemy spawn to prevent quick spawning of said enemy
     //or do we just not care about that?
     //Needs to take in a wave instead of an enemy?
-    IEnumerator SpawnEnemies(GameObject enemy, Spawner[] spawnLocation)
+    IEnumerator SpawnEnemies(Wave wave, Spawner[] spawnLocation)
     {
-        yield return new WaitForSeconds(enemy.GetComponent<Enemy>().baseEnemyStats.TimeBetweenSpawn);
-        EnemySpawnManager.Instance.SpawnEnemies(enemy, spawnLocation[spawnerNumber]);
-        StartCoroutine(SpawnEnemies(enemy, spawnLocation));
+        for (int i = 0; i < wave.EnemiesToSpawn.Length; i++)
+        {
+            EnemySpawnManager.Instance.SpawnEnemies(wave.EnemiesToSpawn[i], spawnLocation[spawnerNumber]);
+            yield return new WaitForSeconds(wave.EnemiesToSpawn[i].GetComponent<Enemy>().baseEnemyStats.TimeBetweenSpawn);
+        }
     }
-
-    // this replaces your Update method
-    //private IEnumerator RunSpawner()
-    //{
-    //    // first time wait 2 seconds
-    //    yield return new WaitForSeconds(countDown);
-    //
-    //    // run this routine infinite
-    //    while (true)
-    //    {
-    //        state = SpawningState.Spawning;
-    //
-    //        // do the spawning and at the same time wait until it's finished
-    //        yield return SpawnWave();
-    //
-    //        state = SpawningState.NothingLeftToSpawn;
-    //
-    //        // wait until all enemies died (are destroyed)
-    //        yield return new WaitWhile(EnemyisAlive);
-    //
-    //        state = SpawningState.BetweenWaves;
-    //
-    //    // wait 5 seconds
-    //        yield return new WaitForSeconds(timeBetweenWaves);
-    //    }
-    //}
 
     private Wave GenerateNewWave(GameObject[] enemyPool, float currentThreatLevel)
     {
+        enemiesInWave = 0;
+
         List<GameObject> possibleEnemiesThatCanSpawn = new List<GameObject>();
         List<GameObject> enemiesThatWillSpawn = new List<GameObject>();
 
+        //Changes the number of possible enemies that can be added to the wave
         int totalEnemyCountValue = Mathf.RoundToInt(100 * currentThreatLevel * (int)GameManager.Instance.LevelDifficulty.Difficulty);
 
         //Goes through pool of all enemies in level and adds them to potential spawn list based on current wave threat level
@@ -127,7 +130,7 @@ public class EnemyWaveManager : MonoBehaviour
         }
 
         //Add random enemies to list of things to spawn
-        for (int i = 0; i <= totalEnemyCountValue;)
+        for (int i = 0; i < totalEnemyCountValue;)
         {
             int enemyToAddPosition = Random.Range(0, possibleEnemiesThatCanSpawn.Count);
             GameObject enemyToAdd = possibleEnemiesThatCanSpawn[enemyToAddPosition];
@@ -135,7 +138,10 @@ public class EnemyWaveManager : MonoBehaviour
             //Check if the list has the enemy type limit
             //Will probably have to refactor this, has to iterate through the list everytime
             if (CheckEnemyListCount(enemyToAdd, enemiesThatWillSpawn) < enemyToAdd.GetComponent<Enemy>().baseEnemyStats.AllowedPerWave)
+            {
                 enemiesThatWillSpawn.Add(enemyToAdd);
+                enemiesInWave++;
+            }
             else
                 possibleEnemiesThatCanSpawn.Remove(enemyToAdd);
 
@@ -143,6 +149,7 @@ public class EnemyWaveManager : MonoBehaviour
         }
 
         var newWave = new Wave(enemiesThatWillSpawn.ToArray());
+        
         return newWave;
     }
 
@@ -164,15 +171,14 @@ public class EnemyWaveManager : MonoBehaviour
     #region Events
     private void Instance_OnWaveStarted()
     {
-        isSpawning = true;
-        state = SpawningState.Spawning;
+        waveOngoing = true;
     }
 
     private void Instance_OnWaveEnded()
     {
-        isSpawning = false;
-        state = SpawningState.NothingLeftToSpawn;
+        waveOngoing = false;
         currentWave++;
+        waves[currentWave] = GenerateNewWave(enemyPrefabs, GameManager.Instance.CurrentThreatLevel);
     }
     #endregion
 }

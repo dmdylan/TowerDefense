@@ -23,8 +23,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private LevelDifficulty levelDifficulty = null;
     public LevelDifficulty LevelDifficulty => levelDifficulty;
 
-    private float currentThreatLevel = 0;
-    public float CurrentThreatLevel => currentThreatLevel;
+    public float CurrentThreatLevel { get; private set; } = 0;
 
     [SerializeField] private LevelLength levelLength = null;
     public LevelLength LevelLength => levelLength;
@@ -47,8 +46,6 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        //maybe create a better way to identify enemies...
-        //use their ID?
         foreach (GameObject enemy in enemyPrefabs)
         {
             var numberToPool = enemy.GetComponent<Enemy>().baseEnemyStats.EnemyType;
@@ -67,7 +64,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        currentThreatLevel = (float)LevelDifficulty.Difficulty;
+        CurrentThreatLevel = (float)LevelDifficulty.Difficulty;
     }
 
     private void Update()
@@ -82,6 +79,6 @@ public class GameManager : MonoBehaviour
 
     private void Instance_OnWaveEnded()
     {
-        currentThreatLevel++;
+        CurrentThreatLevel++;
     }
 }

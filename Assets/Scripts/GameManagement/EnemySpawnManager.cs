@@ -17,11 +17,12 @@ public class EnemySpawnManager : MonoBehaviour
         }
     }
 
+    //sometimes has issues assigning objective to enemy
     void SetEnemyObjective(GameObject enemyPrefab, Spawner enemySpawner)
     {
-        //if (!enemyPrefab.GetComponent<Enemy>())
-        //    return;
-        //else
+        if (!enemyPrefab.GetComponent<Enemy>() || enemySpawner.Objective.Equals(null))
+            return;
+        else
             enemyPrefab.GetComponent<Enemy>().objective = enemySpawner.Objective;        
     }
 
