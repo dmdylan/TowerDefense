@@ -13,13 +13,12 @@ namespace StateStuff
         {
             enemy.navMeshAgent.enabled = true;
 
-            if (enemy.navMeshAgent.Equals(null))           
-                return;         
-            else if (enemy.navMeshAgent.isStopped)          
-                enemy.navMeshAgent.isStopped = false;           
-      
-            else          
-                enemy.navMeshAgent.SetDestination(enemy.objective.position);           
+            if (enemy.navMeshAgent.Equals(null))
+                return;
+            else if (enemy.navMeshAgent.isStopped)
+                enemy.navMeshAgent.isStopped = false;
+            else
+                enemy.navMeshAgent.SetDestination(enemy.Objective);           
         }
 
         public override IEnumerator UpdateState()

@@ -7,22 +7,23 @@ using System.Linq;
 
 public class Enemy : NPCStateMachine, IPoolObject
 {
-    public Transform objective = null;
     public BaseEnemyStats baseEnemyStats;
     public NavMeshAgent navMeshAgent;
     public bool attackableInRange = false;
     public readonly int layerMask = 1 << 8;
     private State currentState;
-
-    // Start is called before the first frame update
-    //void Start()
-    //{ 
-    //}
+    public Vector3 Objective { get; set; }
+    public Spawner spawner;
 
     private void OnEnable()
     {
        navMeshAgent = GetComponent<NavMeshAgent>();
        navMeshAgent.enabled = false;
+    }
+
+    private void Start()
+    {
+        //Objective = spawner.Objective.position;
     }
 
     // Update is called once per frame
@@ -77,8 +78,6 @@ public class Enemy : NPCStateMachine, IPoolObject
 
     public void OnObjectReuse()
     {
-        //navMeshAgent = GetComponent<NavMeshAgent>();
-        //navMeshAgent.updatePosition = true;
         SetState(new PathingState(this));
         currentState = state;
         StartCoroutine(ProximityCheck());

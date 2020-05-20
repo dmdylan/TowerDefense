@@ -36,13 +36,13 @@ public class EnemyWaveManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEvents.Instance.OnWaveEnded += Instance_OnWaveEnded;
-        GameEvents.Instance.OnWaveStarted += Instance_OnWaveStarted;
+        //GameEvents.Instance.OnWaveEnded += Instance_OnWaveEnded;
+        //GameEvents.Instance.OnWaveStarted += Instance_OnWaveStarted;
     }
     private void OnDisable()
     {
-        GameEvents.Instance.OnWaveEnded -= Instance_OnWaveEnded;
-        GameEvents.Instance.OnWaveStarted -= Instance_OnWaveStarted;
+        //GameEvents.Instance.OnWaveEnded -= Instance_OnWaveEnded;
+        //GameEvents.Instance.OnWaveStarted -= Instance_OnWaveStarted;
     }
 
     // Start is called before the first frame update
@@ -69,7 +69,7 @@ public class EnemyWaveManager : MonoBehaviour
 
         //Don't call it at the start, have a game event set up for player to start when ready
         //just calling at the start for testing purposes
-        StartCoroutine(SpawnEnemies(waves[currentWave-1], spawners));
+        StartCoroutine(SpawnEnemies(waves[currentWave - 1], spawners));
     }
 
     // Update is called once per frame
@@ -105,9 +105,18 @@ public class EnemyWaveManager : MonoBehaviour
     {
         for (int i = 0; i < wave.EnemiesToSpawn.Length; i++)
         {
-            EnemySpawnManager.Instance.SpawnEnemies(wave.EnemiesToSpawn[i], spawnLocation[spawnerNumber]);
+            wave.EnemiesToSpawn[i].GetComponent<Enemy>().spawner = spawnLocation[spawnerNumber];
+            PoolManager.Instance.ReuseObject(wave.EnemiesToSpawn[i], spawnLocation[spawnerNumber].transform.position, spawnLocation[spawnerNumber].transform.rotation);
             yield return new WaitForSeconds(wave.EnemiesToSpawn[i].GetComponent<Enemy>().baseEnemyStats.TimeBetweenSpawn);
         }
+    }
+
+    void SetEnemyObjective(GameObject enemyPrefab, Spawner enemySpawner)
+    {
+        //if (!enemyPrefab.GetComponent<Enemy>() || enemySpawner.Objective.Equals(null))
+        //    return;
+        //else
+        enemyPrefab.GetComponent<Enemy>().Objective = enemySpawner.Objective.position;
     }
 
     private Wave GenerateNewWave(GameObject[] enemyPool, float currentThreatLevel)
