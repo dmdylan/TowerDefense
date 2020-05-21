@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace StateStuff
 {
-    class TowerStateMachine : MonoBehaviour
+    public class TowerStateMachine : MonoBehaviour
     {
         protected TowerState towerState;
 

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8089473039854980465}
   - component: {fileID: 8089473039854980468}
   - component: {fileID: 3674643867492110306}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7fa1d502d35f86408ac20e605d8e608, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objective: {fileID: 0}
   baseEnemyStats: {fileID: 11400000, guid: 9273c269fec2ef04f8971c61ee9d1dbc, type: 2}
   navMeshAgent: {fileID: 0}
   attackableInRange: 0
+  spawner: {fileID: 0}

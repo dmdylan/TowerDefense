@@ -1,37 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using StateStuff;
+using System.Collections;
 
-public abstract class Structure : MonoBehaviour, IDamageable
+public abstract class Structure : TowerStateMachine, IDamageable
 {
     public StructureStats structureStats;
+    protected TowerState state;
+    public readonly int layerMask = 1 << 10;
+    public bool attackableInRange;
 
-    protected float baseHealth = 0;
-    protected float baseDamage = 0;
-    protected float baseRange = 0;
-    protected float baseAttackRate = 0;
-    protected float resourceBuildCost = 0;
-    protected float resourceUpgradeCost = 0;
+    public float BaseHealth => structureStats.BaseHealth;
+    public float BaseDamage => structureStats.BaseDamage;
+    public float BaseRange => structureStats.BaseRange;
+    public float BaseAttackRate => structureStats.BaseAttackRate;
+    public float ResourceBuildCost => structureStats.ResourceBuildCost;
+    public float ResourceUpgradeCost => structureStats.ResourceUpgradeCost;
 
-    protected void OnEnable()
-    {
-        baseHealth = structureStats.BaseHealth;
-        baseDamage = structureStats.BaseDamage;
-        baseRange = structureStats.BaseRange;
-        baseAttackRate = structureStats.BaseAttackRate;
-        resourceBuildCost = structureStats.ResourceBuildCost;
-        resourceUpgradeCost = structureStats.ResourceUpgradeCost;
-    }
-
-    protected virtual IEnumerator Attack()
-    {
-        return null;
-    }
-
-    IEnumerator Repair()
-    {
-        return null;
-    }
-
+    public abstract IEnumerator Repair();
     public abstract void TakeDamage(float damageAmount);
 }

@@ -31,7 +31,7 @@ public class EnemyWaveManager : MonoBehaviour
     GameObject[] enemyPrefabs = null;
 
     private bool waveOngoing = false;
-    SpawningState state = SpawningState.Spawning;
+    private SpawningState state = SpawningState.Spawning;
     private int currentWave;
 
     private void OnEnable()
@@ -69,7 +69,7 @@ public class EnemyWaveManager : MonoBehaviour
 
         //Don't call it at the start, have a game event set up for player to start when ready
         //just calling at the start for testing purposes
-        StartCoroutine(SpawnEnemies(waves[currentWave - 1], spawners));
+        StartCoroutine(RunSpawner());
     }
 
     // Update is called once per frame
@@ -78,7 +78,7 @@ public class EnemyWaveManager : MonoBehaviour
         spawnerNumber = Random.Range(0, spawners.Length);
     }
 
-    // this replaces your Update method
+    // this replaces Update method
     private IEnumerator RunSpawner()
     {    
         // run this routine infinite

@@ -7,14 +7,10 @@ public class Barricade : Structure
 {
     private float currentHealth = 0;
 
-    public override void TakeDamage(float damageAmount)
-    {
-        currentHealth -= damageAmount;
-    }
 
     private void Start()
     {
-        currentHealth = baseHealth;
+        currentHealth = BaseHealth;
         //Debug.Log(baseHealth);
         //Debug.Log(baseDamage);
         //Debug.Log(baseRange);
@@ -27,5 +23,15 @@ public class Barricade : Structure
     {
         if (currentHealth <= 0)
             Destroy(gameObject);
+    }
+
+    public override IEnumerator Repair()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void TakeDamage(float damageAmount)
+    {
+        currentHealth -= damageAmount;
     }
 }
