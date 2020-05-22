@@ -4,7 +4,6 @@ using System.Collections;
 public abstract class Structure : TowerStateMachine, IDamageable
 {
     public StructureStats structureStats;
-    protected TowerState state;
     public readonly int layerMask = 1 << 10;
     public bool attackableInRange;
 

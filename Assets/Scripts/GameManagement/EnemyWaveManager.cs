@@ -36,13 +36,14 @@ public class EnemyWaveManager : MonoBehaviour
 
     private void OnEnable()
     {
+        GameEvents.Instance.OnWaveStarted += Instance_OnWaveStarted;
         //GameEvents.Instance.OnWaveEnded += Instance_OnWaveEnded;
-        //GameEvents.Instance.OnWaveStarted += Instance_OnWaveStarted;
     }
+
     private void OnDisable()
     {
+        GameEvents.Instance.OnWaveStarted -= Instance_OnWaveStarted;
         //GameEvents.Instance.OnWaveEnded -= Instance_OnWaveEnded;
-        //GameEvents.Instance.OnWaveStarted -= Instance_OnWaveStarted;
     }
 
     // Start is called before the first frame update
@@ -60,7 +61,7 @@ public class EnemyWaveManager : MonoBehaviour
 
         //Generate the first wave
         waves[0] = GenerateNewWave(enemyPrefabs, GameManager.Instance.CurrentThreatLevel);
-        
+
         //Debug contents of the wave
         //for (int i = 0; i < waves[0].EnemiesToSpawn.Length; i++)
         //{ 
@@ -69,7 +70,8 @@ public class EnemyWaveManager : MonoBehaviour
 
         //Don't call it at the start, have a game event set up for player to start when ready
         //just calling at the start for testing purposes
-        StartCoroutine(RunSpawner());
+        GameEvents.Instance.WaveStarted();
+
     }
 
     // Update is called once per frame
@@ -181,6 +183,7 @@ public class EnemyWaveManager : MonoBehaviour
     private void Instance_OnWaveStarted()
     {
         waveOngoing = true;
+        StartCoroutine(RunSpawner());
     }
 
     private void Instance_OnWaveEnded()

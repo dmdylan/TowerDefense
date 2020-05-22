@@ -13,17 +13,18 @@ namespace StateStuff
 
         public override void EnterState()
         {
-            throw new System.NotImplementedException();
+            Debug.Log("TowerAttackingState - EnterState()");
         }
 
         public override void ExitState()
         {
-            throw new System.NotImplementedException();
+            Debug.Log("TowerAttackingState - ExitState()");
         }
 
         public override IEnumerator UpdateState()
         {
-            throw new System.NotImplementedException();
+            Debug.Log("TowerAttackingState - UpdateState()");
+            yield return null;
         }
     }
 }

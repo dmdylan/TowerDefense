@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
 
     private void Instance_OnWaveStarted()
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Wave started");
     }
 
     private void Instance_OnWaveEnded()

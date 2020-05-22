@@ -1,6 +1,7 @@
 ﻿using StateStuff;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 
 namespace StateStuff
@@ -13,17 +14,18 @@ namespace StateStuff
 
         public override void EnterState()
         {
-            throw new System.NotImplementedException();
+            Debug.Log("TowerDetectingState - EnterState()");
         }
 
         public override void ExitState()
         {
-            throw new System.NotImplementedException();
+            Debug.Log("TowerDetectingState - ExitState()");
         }
 
         public override IEnumerator UpdateState()
         {
-            throw new System.NotImplementedException();
+            Debug.Log("TowerDetectingState - UpdateState()");
+            yield return null;
         }
     }
 }
