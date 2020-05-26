@@ -21,11 +21,6 @@ public class Enemy : NPCStateMachine, IPoolObject
        navMeshAgent.enabled = false;
     }
 
-    private void Start()
-    {
-        //Objective = spawner.Objective.position;
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -84,8 +79,5 @@ public class Enemy : NPCStateMachine, IPoolObject
         StartCoroutine(state.UpdateState());
     }
 
-    public void Destroy()
-    {
-        throw new System.NotImplementedException();
-    }
+    public void Destroy() => gameObject.SetActive(false);
 }

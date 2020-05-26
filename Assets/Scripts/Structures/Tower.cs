@@ -6,12 +6,15 @@ using UnityEngine;
 public class Tower : Structure
 {
     private float currentHealth;
+    private float maxHealth;
     private TowerState currentState;
+    public GameObject firePoint;
 
     // Start is called before the first frame update
     void Start()
     {
-        currentHealth = structureStats.BaseHealth;
+        maxHealth = structureStats.BaseHealth;
+        currentHealth = maxHealth;
         SetState(new TowerDetectingState(this));
         currentState = towerState;
         StartCoroutine(ProximityCheck());

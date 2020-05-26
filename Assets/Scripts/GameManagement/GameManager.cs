@@ -46,6 +46,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        //Create pool of enemies based on enemy type
         foreach (GameObject enemy in enemyPrefabs)
         {
             var numberToPool = enemy.GetComponent<Enemy>().baseEnemyStats.EnemyType;

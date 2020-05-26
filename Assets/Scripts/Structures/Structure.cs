@@ -13,7 +13,6 @@ public abstract class Structure : TowerStateMachine, IDamageable
     public float BaseAttackRate => structureStats.BaseAttackRate;
     public float ResourceBuildCost => structureStats.ResourceBuildCost;
     public float ResourceUpgradeCost => structureStats.ResourceUpgradeCost;
-
     public abstract IEnumerator Repair();
     public abstract void TakeDamage(float damageAmount);
 }
