@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     public GameObject[] EnemyPrefabs => enemyPrefabs;
     #endregion
 
+    public GameObject towerProjectile;
 
     private void OnEnable()
     {
@@ -60,6 +61,8 @@ public class GameManager : MonoBehaviour
             else
                 PoolManager.Instance.CreatePool(enemy, 30);
         }
+
+        PoolManager.Instance.CreatePool(towerProjectile, 20);
     }
 
     // Start is called before the first frame update

@@ -7,16 +7,9 @@ public class Barricade : Structure
 {
     private float currentHealth = 0;
 
-
     private void Start()
     {
-        currentHealth = BaseHealth;
-        //Debug.Log(baseHealth);
-        //Debug.Log(baseDamage);
-        //Debug.Log(baseRange);
-        //Debug.Log(baseAttackRate);
-        //Debug.Log(resourceBuildCost);
-        //Debug.Log(resourceUpgradeCost);
+        currentHealth = structureStats.BaseHealth;
     }
 
     private void Update()

@@ -8,7 +8,6 @@ public class Tower : Structure
     private float currentHealth;
     private float maxHealth;
     private TowerState currentState;
-    public GameObject firePoint;
 
     // Start is called before the first frame update
     void Start()
@@ -37,7 +36,7 @@ public class Tower : Structure
         while (attackableInRange.Equals(false))
         {
             yield return new WaitForSeconds(.1f);
-            //Checks for any structures in attack range, if there are then it 
+            //Checks for any enemies in attack range, if there are then it 
             //changes to attack state and sets bool to true
             if (Physics.CheckSphere(transform.position, structureStats.BaseRange, layerMask))
             {
