@@ -674,7 +674,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba01b069a0cd1d748b93ebb9bcedf81d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  towerStats: {fileID: 11400000, guid: cd814eeb33837e64d89c1cf6fb9552c0, type: 2}
+  tower: {fileID: 11400000, guid: cd814eeb33837e64d89c1cf6fb9552c0, type: 2}
 --- !u!54 &44426608
 Rigidbody:
   m_ObjectHideFlags: 0

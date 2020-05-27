@@ -18,6 +18,5 @@ MonoBehaviour:
   baseAttackRate: 0.5
   resourceBuildCost: 10
   resourceUpgradeCost: 20
-  projectile: {fileID: 4897856065418997381, guid: db4c792f12879fd4c9ef4d75f63741ad,
-    type: 3}
+  projectile: {fileID: 1197435577, guid: db4c792f12879fd4c9ef4d75f63741ad, type: 3}
   projectileSpeed: 25

@@ -70,7 +70,6 @@ public class Tower : Structure
     {
         Gizmos.DrawWireSphere(transform.position, structureStats.BaseRange);
     }
-
     public override void TakeDamage(float damageAmount)
     {
         currentHealth -= damageAmount;

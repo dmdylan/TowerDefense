@@ -14,17 +14,14 @@ namespace StateStuff
 
         public override void EnterState()
         {
-            Debug.Log("TowerDetectingState - EnterState()");
         }
 
         public override void ExitState()
         {
-            Debug.Log("TowerDetectingState - ExitState()");
         }
 
         public override IEnumerator UpdateState()
         {
-            Debug.Log("TowerDetectingState - UpdateState()");
             yield return null;
         }
     }

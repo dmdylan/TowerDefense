@@ -11,7 +11,7 @@ public class StructureStats : ScriptableObject
     [SerializeField] private float baseAttackRate = 0;
     [SerializeField] private float resourceBuildCost = 0;
     [SerializeField] private float resourceUpgradeCost = 0;
-    [SerializeField] private GameObject projectile;
+    [SerializeField] private TowerProjectile projectile = null;
     [SerializeField] private float projectileSpeed = 0;
 
     public float BaseHealth => baseHealth;
@@ -20,7 +20,7 @@ public class StructureStats : ScriptableObject
     public float BaseAttackRate => baseAttackRate;
     public float ResourceBuildCost => resourceBuildCost;
     public float ResourceUpgradeCost => resourceUpgradeCost;
-    public GameObject Projectile => projectile;
+    public TowerProjectile Projectile => projectile;
     public float ProjectileSpeed => projectileSpeed;
 }
 

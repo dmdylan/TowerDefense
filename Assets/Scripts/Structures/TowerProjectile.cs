@@ -6,23 +6,21 @@ public class TowerProjectile : MonoBehaviour, IPoolObject
 {
     //TODO : Figure out better way to have the tower projectile linked to the tower.
     //Right now can't detect changes in tower, like a buff, all based on the base stats SO.
-    [SerializeField] private StructureStats towerStats;
-    private Vector3 targetPosition;
+    [SerializeField] private StructureStats tower = null;
+    private Vector3 targetPosition = Vector3.zero;
 
     // Update is called once per frame
     void Update()
     {
         Vector3 moveDir = (targetPosition - transform.position).normalized;
-
-        transform.position += moveDir * towerStats.ProjectileSpeed * Time.deltaTime;
+        transform.position += moveDir * tower.ProjectileSpeed * Time.deltaTime;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(collision.gameObject);
         if(collision.collider.TryGetComponent(out Enemy enemy))
         {
-            enemy.GetComponent<IDamageable>().TakeDamage(towerStats.BaseDamage);
+            enemy.GetComponent<IDamageable>().TakeDamage(tower.BaseDamage);
             Destroy();
         }
         else
@@ -35,6 +33,6 @@ public class TowerProjectile : MonoBehaviour, IPoolObject
 
     public void OnObjectReuse()
     {
-        return;
+        targetPosition = Vector3.one;
     }
 }

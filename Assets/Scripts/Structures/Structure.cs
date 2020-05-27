@@ -8,6 +8,7 @@ public abstract class Structure : TowerStateMachine, IDamageable
     public readonly int layerMask = 1 << 10;
     public bool attackableInRange;
     public Transform firePoint;
+    public Transform Target { get; set; }
 
     public abstract IEnumerator Repair();
     public abstract void TakeDamage(float damageAmount);
