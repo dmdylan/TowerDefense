@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu (fileName = "New Scuture Stats", menuName = "Structures/New Structure Stats")]
 public class StructureStats : ScriptableObject
 {
+    //TODO: Remove projectile info from this shit
     [SerializeField] private float baseHealth = 0;
     [SerializeField] private float baseDamage = 0;
     [SerializeField] private float baseRange = 0;

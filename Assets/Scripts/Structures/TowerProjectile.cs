@@ -8,6 +8,13 @@ public class TowerProjectile : MonoBehaviour, IPoolObject
     //Right now can't detect changes in tower, like a buff, all based on the base stats SO.
     [SerializeField] private StructureStats tower = null;
     private Vector3 targetPosition = Vector3.zero;
+    public Structure projectileStructure;
+
+    private void OnEnable()
+    {
+        //projectileStructure = null;
+        //targetPosition = ProjectileStructure.Target.position;
+    }
 
     // Update is called once per frame
     void Update()
@@ -33,6 +40,6 @@ public class TowerProjectile : MonoBehaviour, IPoolObject
 
     public void OnObjectReuse()
     {
-        targetPosition = Vector3.one;
+        targetPosition = projectileStructure.Target.position;       
     }
 }

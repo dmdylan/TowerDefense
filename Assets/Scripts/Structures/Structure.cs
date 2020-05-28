@@ -9,6 +9,7 @@ public abstract class Structure : TowerStateMachine, IDamageable
     public bool attackableInRange;
     public Transform firePoint;
     public Transform Target { get; set; }
+    public GameObject projectile;
 
     public abstract IEnumerator Repair();
     public abstract void TakeDamage(float damageAmount);

@@ -31,7 +31,8 @@ namespace StateStuff
                 AddAndRemoveEnemies();
                 yield return new WaitForSeconds(structure.structureStats.BaseAttackRate);
                 SetTowerTarget(possibleTargets);
-                PoolManager.Instance.ReuseObject(structure.structureStats.Projectile.gameObject, structure.firePoint.position, structure.firePoint.rotation);
+                structure.projectile.gameObject.GetComponent<TowerProjectile>().projectileStructure = structure;
+                PoolManager.Instance.ReuseObject(structure.projectile.gameObject, structure.firePoint.position, structure.firePoint.rotation);
             }
         }
 

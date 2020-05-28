@@ -5,7 +5,7 @@ using UnityEngine;
 using StateStuff;
 using System.Linq;
 
-public class Enemy : NPCStateMachine, IPoolObject
+public class Enemy : NPCStateMachine, IPoolObject, IDamageable
 {
     public BaseEnemyStats baseEnemyStats;
     public NavMeshAgent navMeshAgent;
@@ -14,6 +14,8 @@ public class Enemy : NPCStateMachine, IPoolObject
     private State currentState;
     public Vector3 Objective { get; set; }
     public Spawner spawner;
+
+    private float currentHealth;
 
     private void OnEnable()
     {
@@ -73,11 +75,25 @@ public class Enemy : NPCStateMachine, IPoolObject
 
     public void OnObjectReuse()
     {
+        EnemySetup();
         SetState(new PathingState(this));
         currentState = state;
         StartCoroutine(ProximityCheck());
         StartCoroutine(state.UpdateState());
     }
 
+    void EnemySetup()
+    {
+        currentHealth = baseEnemyStats.MaxHealth;
+    }
+
     public void Destroy() => gameObject.SetActive(false);
+
+    public void TakeDamage(float damageAmount)
+    {
+        if (currentHealth - damageAmount <= 0)
+            Destroy();
+        else
+            currentHealth -= damageAmount;
+    }
 }
