@@ -87,6 +87,7 @@ public class Enemy : NPCStateMachine, IPoolObject, IDamageable
         currentHealth = baseEnemyStats.MaxHealth;
     }
 
+    //TODO: Set up game event for when enemy dies
     public void Destroy() => gameObject.SetActive(false);
 
     public void TakeDamage(float damageAmount)

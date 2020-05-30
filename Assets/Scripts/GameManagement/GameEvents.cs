@@ -27,4 +27,7 @@ public class GameEvents : MonoBehaviour
 
     public event Action OnWaveEnded;
     public void WaveEnded() => OnWaveEnded?.Invoke();
+
+    public event Action OnObjectiveDamageTaken;
+    public void ObjectiveDamageTaken() => OnObjectiveDamageTaken?.Invoke();
 }

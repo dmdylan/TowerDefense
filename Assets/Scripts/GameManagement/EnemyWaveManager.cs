@@ -71,7 +71,6 @@ public class EnemyWaveManager : MonoBehaviour
         //Don't call it at the start, have a game event set up for player to start when ready
         //just calling at the start for testing purposes
         GameEvents.Instance.WaveStarted();
-
     }
 
     // Update is called once per frame

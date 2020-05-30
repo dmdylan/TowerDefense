@@ -28,6 +28,9 @@ public class Tower : Structure
             StartCoroutine(towerState.UpdateState());
             currentState = towerState;
         }
+
+        if (currentHealth <= 0)
+            Destroy(this);
     }
 
     IEnumerator ProximityCheck()

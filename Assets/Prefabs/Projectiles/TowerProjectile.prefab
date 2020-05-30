@@ -675,6 +675,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tower: {fileID: 11400000, guid: cd814eeb33837e64d89c1cf6fb9552c0, type: 2}
+  projectileStructure: {fileID: 517753290410026818, guid: 599a345024593f7469b193dd8c42c14c,
+    type: 3}
 --- !u!54 &44426608
 Rigidbody:
   m_ObjectHideFlags: 0
