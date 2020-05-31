@@ -30,7 +30,7 @@ public class Tower : Structure
         }
 
         if (currentHealth <= 0)
-            Destroy(this);
+            Destroy(this.gameObject);
     }
 
     IEnumerator ProximityCheck()
